@@ -32,44 +32,5 @@
     <div id="bonusCoinsContainer"></div>
 
     <script src="script.js"></script>
-    <script>
-        // Add event listener to click button
-        document.getElementById('clickButton').addEventListener('click', function() {
-            // Get current coin count
-            var coinCount = parseInt(document.getElementById('coinCount').textContent);
-            // Increment coin count
-            coinCount++;
-            // Update coin count display
-            document.getElementById('coinCount').textContent = coinCount;
-        });
-
-        // Add event listeners to upgrade buttons
-        var upgrades = document.getElementsByClassName('upgrade');
-        for (var i = 0; i < upgrades.length; i++) {
-            upgrades[i].addEventListener('click', function() {
-                // Get current coin count
-                var coinCount = parseInt(document.getElementById('coinCount').textContent);
-                // Get upgrade cost
-                var upgradeCost = parseInt(this.getAttribute('data-cost'));
-                // Check if player has enough coins
-                if (coinCount >= upgradeCost) {
-                    // Subtract upgrade cost from coin count
-                    coinCount -= upgradeCost;
-                    // Update coin count display
-                    document.getElementById('coinCount').textContent = coinCount;
-                    // Enable upgrade button
-                    this.disabled = false;
-                    // Update upgrade level display
-                    var upgradeLevel = parseInt(this.querySelector('span').textContent);
-                    upgradeLevel++;
-                    this.querySelector('span').textContent = upgradeLevel;
-                    // Update upgrade cost display
-                    upgradeCost *= 2;
-                    this.setAttribute('data-cost', upgradeCost);
-                    this.querySelector('span:last-child').textContent = upgradeCost;
-                }
-            });
-        }
-    </script>
 </body>
 </html>
