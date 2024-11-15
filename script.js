@@ -7,10 +7,10 @@ let superClickerActive = false;
 
 // Upgrade costs and levels
 let upgrades = {
-    autoClicker: { level: 1, cost: 10 },
-    clickMultiplier: { level: 1, cost: 25 },
-    coinMagnet: { cost: 50 },
-    superClicker: { cost: 100 },
+    autoClicker: { level: 1, cost: 10, multiplier: 1 },
+    clickMultiplier: { level: 1, cost: 25, multiplier: 2 },
+    coinMagnet: { cost: 50, duration: 5000 },
+    superClicker: { cost: 100, multiplier: 3, duration: 5000 },
 };
 
 // DOM Elements
@@ -77,7 +77,7 @@ autoClickerButton.addEventListener("click", () => {
         upgrades.autoClicker.cost *= 2;
         if (!autoClickerInterval) {
             autoClickerInterval = setInterval(() => {
-                coinCount += coinsPerClick;
+                coinCount += coinsPerClick * upgrades.autoClicker.multiplier;
                 updateDisplay();
                 saveProgress();
             }, 1000);
@@ -92,7 +92,7 @@ autoClickerButton.addEventListener("click", () => {
 clickMultiplierButton.addEventListener("click", () => {
     if (coinCount >= upgrades.clickMultiplier.cost) {
         coinCount -= upgrades.clickMultiplier.cost;
-        coinsPerClick *= 2;
+        coinsPerClick *= upgrades.clickMultiplier.multiplier;
         upgrades.clickMultiplier.level++;
         upgrades.clickMultiplier.cost *= 2;
     }
@@ -110,7 +110,7 @@ coinMagnetButton.addEventListener("click", () => {
         setTimeout(() => {
             coinMagnetActive = false;
             bonusCoinsContainer.innerHTML = "";
-        }, 5000);
+        }, upgrades.coinMagnet.duration);
     }
     updateDisplay();
     checkUpgrades();
@@ -140,13 +140,13 @@ superClickerButton.addEventListener("click", () => {
     if (coinCount >= upgrades.superClicker.cost && !superClickerActive) {
         coinCount -= upgrades.superClicker.cost;
         superClickerActive = true;
-        coinsPerClick *= 3;
+        coinsPerClick *= upgrades.superClicker.multiplier;
         updateDisplay();
         setTimeout(() => {
-            coinsPerClick /= 3;
+            coinsPerClick /= upgrades.superClicker.multiplier;
             superClickerActive = false;
             updateDisplay();
-        }, 5000);
+        }, upgrades.superClicker.duration);
     }
     checkUpgrades();
     saveProgress();
